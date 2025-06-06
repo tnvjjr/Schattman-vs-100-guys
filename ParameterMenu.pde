@@ -1,112 +1,84 @@
-// ParameterMenu.pde
-// G4P parameter menu for simulation attributes
+// ParameterMenu.pde - Custom Processing UI (no G4P)
 
-import g4p_controls.*;
+// --- Global variables for parameters (use these in your sim logic) ---
+float gorillaFear = 5;
+float gorillaStamina = 100;
+float humanFear = 5;
+int simulationSpeed = 1;
+boolean paused = false;
 
-GPanel paramPanel;
-GSlider sSimSpeed, sGorillaFear, sGorillaStamina, sHumanFear;
-GLabel lSimSpeed, lGorillaFear, lGorillaStamina, lHumanFear, lHumanStamina;
-GButton btnShowHideMenu, btnPause, btnReset, btnSpeed, btnStatsToggle;
-boolean menuVisible = true;
+// --- UI state ---
+boolean draggingGorillaFear = false;
+boolean draggingGorillaStamina = false;
+boolean draggingHumanFear = false;
+boolean draggingSimSpeed = false;
 
-void setupParameterMenu() {
-  // Create panel
-  paramPanel = new GPanel(this, 20, 70, 300, 250, "Simulation Parameters");
-  paramPanel.setOpaque(true);
-  paramPanel.setVisible(menuVisible);
+// --- UI layout constants ---
+int sliderX = 40, sliderW = 200;
+int gfY = 80, gsY = 130, hfY = 180, ssY = 230;
+int sliderH = 20;
 
-  // Simulation speed label and slider
-  lSimSpeed = new GLabel(this, 30, 10, 220, 20, "Simulation Speed");
-  paramPanel.addControl(lSimSpeed);
-  sSimSpeed = new GSlider(this, 30, 30, 220, 30, 10.0);
-  sSimSpeed.setLimits(simulationSpeed, 1, 4);
-  sSimSpeed.setNumberFormat(G4P.INTEGER, 0);
-  sSimSpeed.setShowValue(true);
-  sSimSpeed.setShowLimits(true);
-  paramPanel.addControl(sSimSpeed);
-  sSimSpeed.addEventHandler(this, "handleSliderChange");
+void drawParameterMenu() {
+  fill(240);
+  rect(20, 60, 300, 220, 10);
+  fill(0);
+  textSize(18);
+  text("Parameter Menu", 40, 75);
+  textSize(14);
 
-  // Gorilla fear label and slider
-  lGorillaFear = new GLabel(this, 30, 60, 220, 20, "Gorilla Fear");
-  paramPanel.addControl(lGorillaFear);
-  sGorillaFear = new GSlider(this, 30, 80, 220, 30, 10.0);
-  sGorillaFear.setLimits(gorilla.intimidationFactor, 0, 10);
-  sGorillaFear.setShowValue(true);
-  sGorillaFear.setShowLimits(true);
-  paramPanel.addControl(sGorillaFear);
-  sGorillaFear.addEventHandler(this, "handleSliderChange");
+  // --- Draw sliders ---
+  drawSlider("Gorilla Fear", gorillaFear, 0, 10, sliderX, gfY, sliderW, sliderH);
+  drawSlider("Gorilla Stamina", gorillaStamina, 0, 200, sliderX, gsY, sliderW, sliderH);
+  drawSlider("Human Fear", humanFear, 0, 10, sliderX, hfY, sliderW, sliderH);
+  drawSlider("Sim Speed", simulationSpeed, 1, 4, sliderX, ssY, sliderW, sliderH);
 
-  // Gorilla stamina label and slider
-  lGorillaStamina = new GLabel(this, 30, 110, 220, 20, "Gorilla Stamina");
-  paramPanel.addControl(lGorillaStamina);
-  sGorillaStamina = new GSlider(this, 30, 130, 220, 30, 10.0);
-  sGorillaStamina.setLimits(gorilla.staminaLevel, 0, 200);
-  sGorillaStamina.setShowValue(true);
-  sGorillaStamina.setShowLimits(true);
-  paramPanel.addControl(sGorillaStamina);
-  sGorillaStamina.addEventHandler(this, "handleSliderChange");
-
-  // Human fear label and slider
-  lHumanFear = new GLabel(this, 30, 160, 220, 20, "Human Fear");
-  paramPanel.addControl(lHumanFear);
-  sHumanFear = new GSlider(this, 30, 180, 220, 30, 10.0);
-  sHumanFear.setLimits(5, 0, 10);
-  sHumanFear.setShowValue(true);
-  sHumanFear.setShowLimits(true);
-  paramPanel.addControl(sHumanFear);
-  sHumanFear.addEventHandler(this, "handleSliderChange");
-
-  // Show/hide button
-  btnShowHideMenu = new GButton(this, 340, 70, 100, 30, "Hide Menu");
-  btnShowHideMenu.addEventHandler(this, "handleButtonClick");
-
-  // Add control buttons to the parameter menu
-  btnPause = new GButton(this, 30, 220, 60, 30, paused ? "PLAY" : "PAUSE");
-  paramPanel.addControl(btnPause);
-  btnPause.addEventHandler(this, "handleButtonClick");
-  btnReset = new GButton(this, 100, 220, 60, 30, "RESET");
-  paramPanel.addControl(btnReset);
-  btnReset.addEventHandler(this, "handleButtonClick");
-  btnSpeed = new GButton(this, 170, 220, 60, 30, "SPEED: " + simulationSpeed + "x");
-  paramPanel.addControl(btnSpeed);
-  btnSpeed.addEventHandler(this, "handleButtonClick");
-  btnStatsToggle = new GButton(this, 240, 220, 60, 30, showStats ? "HIDE STATS" : "SHOW STATS");
-  paramPanel.addControl(btnStatsToggle);
-  btnStatsToggle.addEventHandler(this, "handleButtonClick");
+  // --- Draw Pause Button ---
+  fill(paused ? color(200, 100, 100) : color(100, 200, 100));
+  rect(260, 230, 60, 30, 8);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text(paused ? "PLAY" : "PAUSE", 290, 245);
+  textAlign(LEFT, BASELINE);
 }
 
-public void handleSliderChange(GSlider slider, GEvent event) {
-  if (event == GEvent.CHANGE) {
-    if (slider == sSimSpeed) {
-      simulationSpeed = int(slider.getValueF());
-    } else if (slider == sGorillaFear) {
-      gorilla.intimidationFactor = slider.getValueF();
-    } else if (slider == sGorillaStamina) {
-      gorilla.staminaLevel = slider.getValueF();
-    } else if (slider == sHumanFear) {
-      for (Human h : humans) h.fearLevel = slider.getValueF();
-    }
-  }
+void drawSlider(String label, float val, float minV, float maxV, int x, int y, int w, int h) {
+  fill(180);
+  rect(x, y, w, h, 6);
+  float norm = map(val, minV, maxV, 0, 1);
+  int knobX = int(x + norm * w);
+  fill(60, 120, 220);
+  ellipse(knobX, y + h/2, h, h);
+  fill(0);
+  text(label + ": " + nf(val, 0, 2), x + w + 15, y + h/2 + 5);
 }
 
-public void handleButtonClick(GButton button, GEvent event) {
-  if (event == GEvent.CLICKED) {
-    if (button == btnShowHideMenu) {
-      menuVisible = !menuVisible;
-      paramPanel.setVisible(menuVisible);
-      btnShowHideMenu.setText(menuVisible ? "Hide Menu" : "Show Menu");
-    } else if (button == btnPause) {
-      paused = !paused;
-      btnPause.setText(paused ? "PLAY" : "PAUSE");
-    } else if (button == btnReset) {
-      initializeSimulation();
-    } else if (button == btnSpeed) {
-      simulationSpeed = (simulationSpeed % 4) + 1;
-      if (simulationSpeed == 3) simulationSpeed = 4;
-      btnSpeed.setText("SPEED: " + simulationSpeed + "x");
-    } else if (button == btnStatsToggle) {
-      showStats = !showStats;
-      btnStatsToggle.setText(showStats ? "HIDE STATS" : "SHOW STATS");
-    }
-  }
+void mousePressedParameterMenu() {
+  // Gorilla Fear
+  if (overSlider(mouseX, mouseY, sliderX, gfY, sliderW, sliderH)) draggingGorillaFear = true;
+  // Gorilla Stamina
+  if (overSlider(mouseX, mouseY, sliderX, gsY, sliderW, sliderH)) draggingGorillaStamina = true;
+  // Human Fear
+  if (overSlider(mouseX, mouseY, sliderX, hfY, sliderW, sliderH)) draggingHumanFear = true;
+  // Sim Speed
+  if (overSlider(mouseX, mouseY, sliderX, ssY, sliderW, sliderH)) draggingSimSpeed = true;
+  // Pause Button
+  if (mouseX > 260 && mouseX < 320 && mouseY > 230 && mouseY < 260) paused = !paused;
+}
+
+void mouseDraggedParameterMenu() {
+  if (draggingGorillaFear) gorillaFear = constrain(map(mouseX, sliderX, sliderX + sliderW, 0, 10), 0, 10);
+  if (draggingGorillaStamina) gorillaStamina = constrain(map(mouseX, sliderX, sliderX + sliderW, 0, 200), 0, 200);
+  if (draggingHumanFear) humanFear = constrain(map(mouseX, sliderX, sliderX + sliderW, 0, 10), 0, 10);
+  if (draggingSimSpeed) simulationSpeed = int(constrain(map(mouseX, sliderX, sliderX + sliderW, 1, 4), 1, 4));
+}
+
+void mouseReleasedParameterMenu() {
+  draggingGorillaFear = false;
+  draggingGorillaStamina = false;
+  draggingHumanFear = false;
+  draggingSimSpeed = false;
+}
+
+boolean overSlider(int mx, int my, int x, int y, int w, int h) {
+  return (mx > x && mx < x + w && my > y && my < y + h);
 } 
