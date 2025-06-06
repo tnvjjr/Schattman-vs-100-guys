@@ -8,6 +8,7 @@ class Gorilla extends Entity {
   float intimidationFactor;
   float roarCooldown;
   float chargeCooldown;
+  PImage gorillaImage; // Variable to hold the gorilla image
   
   // Constructor
   Gorilla(float x, float y) {
@@ -26,6 +27,9 @@ class Gorilla extends Entity {
     intimidationFactor = 5.0;
     roarCooldown = 0;
     chargeCooldown = 0;
+    
+    // Load gorilla image
+    gorillaImage = loadImage("Screenshot 2025-06-06 at 3.04.49 PM.png");
   }
   
   // Update method - override from Entity
@@ -81,10 +85,8 @@ class Gorilla extends Entity {
     stroke(255, 0, 0, 50);
     ellipse(position.x, position.y, territorialRange * 2, territorialRange * 2);
     
-    // Draw gorilla
-    fill(100, 60, 20);
-    stroke(0);
-    ellipse(position.x, position.y, size, size);
+    // Draw gorilla image
+    image(gorillaImage, position.x - size/2, position.y - size/2, size, size);
     
     // Draw health bar
     float healthBarWidth = size * 1.5;
