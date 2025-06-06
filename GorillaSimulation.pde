@@ -176,7 +176,7 @@ void loadConfiguration(String filename) {
 
 // Mouse and keyboard interaction
 void mousePressed() {
-  gui.handleMousePressed(mouseX, mouseY);
+  // No GUI mouse handling needed; all controls are in ParameterMenu
 }
 
 void keyPressed() {
