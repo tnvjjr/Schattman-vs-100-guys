@@ -76,10 +76,6 @@ void handleButtonEvents(GButton button) {
   }
 }
 
-void handlePanelEvents(GPanel panel, GEvent event) {
-  // No-op for now
-}
-
 // G4P event handler
 void handleSliderEvents(GValueControl slider, GEvent event) {
   if (event == GEvent.CHANGE) {

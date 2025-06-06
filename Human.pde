@@ -410,12 +410,10 @@ class Human extends Entity {
     // Count roles in neighbors
     int leaders = 0;
     int defenders = 0;
-    int followers = 0;
     
     for (Human neighbor : neighbors) {
       if (neighbor.role.equals("leader")) leaders++;
       if (neighbor.role.equals("defender")) defenders++;
-      if (neighbor.role.equals("follower")) followers++;
     }
     
     // Adjust behavior based on group composition
