@@ -15,7 +15,7 @@ class Gorilla extends Entity {
     super(x, y);
     
     // Override base entity properties
-    size = 60;
+    size = 100;
     mass = 5.0;
     maxSpeed = 3.0;
     health = 500;
@@ -30,6 +30,9 @@ class Gorilla extends Entity {
     
     // Load gorilla image
     gorillaImage = loadImage("Screenshot 2025-06-06 at 3.04.49 PM.png");
+    if (gorillaImage == null) {
+      println("Failed to load gorilla image! Make sure the file is in the data folder and the name is correct.");
+    }
   }
   
   // Update method - override from Entity
@@ -85,8 +88,14 @@ class Gorilla extends Entity {
     stroke(255, 0, 0, 50);
     ellipse(position.x, position.y, territorialRange * 2, territorialRange * 2);
     
-    // Draw gorilla image
-    image(gorillaImage, position.x - size/2, position.y - size/2, size, size);
+    // Draw gorilla image if loaded, otherwise fallback to ellipse
+    if (gorillaImage != null) {
+      image(gorillaImage, position.x - size/2, position.y - size/2, size, size);
+    } else {
+      fill(100, 60, 20);
+      stroke(0);
+      ellipse(position.x, position.y, size, size);
+    }
     
     // Draw health bar
     float healthBarWidth = size * 1.5;
