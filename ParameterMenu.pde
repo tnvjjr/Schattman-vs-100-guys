@@ -4,7 +4,8 @@
 import g4p_controls.*;
 
 GPanel paramPanel;
-GSlider sSimSpeed, sGorillaFear, sGorillaStamina, sHumanFear, sHumanStamina;
+GSlider sSimSpeed, sGorillaFear, sGorillaStamina, sHumanFear;
+GLabel lSimSpeed, lGorillaFear, lGorillaStamina, lHumanFear, lHumanStamina;
 GButton btnShowHideMenu;
 boolean menuVisible = true;
 
@@ -14,46 +15,42 @@ void setupParameterMenu() {
   paramPanel.setOpaque(true);
   paramPanel.setVisible(menuVisible);
 
-  // Simulation speed slider
+  // Simulation speed label and slider
+  lSimSpeed = new GLabel(this, 30, 10, 220, 20, "Simulation Speed");
+  paramPanel.addControl(lSimSpeed);
   sSimSpeed = new GSlider(this, 30, 30, 220, 30, 10.0);
   sSimSpeed.setLimits(simulationSpeed, 1, 4);
   sSimSpeed.setNumberFormat(G4P.INTEGER, 0);
   sSimSpeed.setShowValue(true);
   sSimSpeed.setShowLimits(true);
   paramPanel.addControl(sSimSpeed);
-  sSimSpeed.setText("Simulation Speed");
 
-  // Gorilla fear slider
-  sGorillaFear = new GSlider(this, 30, 70, 220, 30, 10.0);
+  // Gorilla fear label and slider
+  lGorillaFear = new GLabel(this, 30, 60, 220, 20, "Gorilla Fear");
+  paramPanel.addControl(lGorillaFear);
+  sGorillaFear = new GSlider(this, 30, 80, 220, 30, 10.0);
   sGorillaFear.setLimits(gorilla.intimidationFactor, 0, 10);
   sGorillaFear.setShowValue(true);
   sGorillaFear.setShowLimits(true);
   paramPanel.addControl(sGorillaFear);
-  sGorillaFear.setText("Gorilla Fear");
 
-  // Gorilla stamina slider
-  sGorillaStamina = new GSlider(this, 30, 110, 220, 30, 10.0);
+  // Gorilla stamina label and slider
+  lGorillaStamina = new GLabel(this, 30, 110, 220, 20, "Gorilla Stamina");
+  paramPanel.addControl(lGorillaStamina);
+  sGorillaStamina = new GSlider(this, 30, 130, 220, 30, 10.0);
   sGorillaStamina.setLimits(gorilla.staminaLevel, 0, 200);
   sGorillaStamina.setShowValue(true);
   sGorillaStamina.setShowLimits(true);
   paramPanel.addControl(sGorillaStamina);
-  sGorillaStamina.setText("Gorilla Stamina");
 
-  // Human fear slider
-  sHumanFear = new GSlider(this, 30, 150, 220, 30, 10.0);
+  // Human fear label and slider
+  lHumanFear = new GLabel(this, 30, 160, 220, 20, "Human Fear");
+  paramPanel.addControl(lHumanFear);
+  sHumanFear = new GSlider(this, 30, 180, 220, 30, 10.0);
   sHumanFear.setLimits(5, 0, 10);
   sHumanFear.setShowValue(true);
   sHumanFear.setShowLimits(true);
   paramPanel.addControl(sHumanFear);
-  sHumanFear.setText("Human Fear");
-
-  // Human stamina slider
-  sHumanStamina = new GSlider(this, 30, 190, 220, 30, 10.0);
-  sHumanStamina.setLimits(50, 0, 100);
-  sHumanStamina.setShowValue(true);
-  sHumanStamina.setShowLimits(true);
-  paramPanel.addControl(sHumanStamina);
-  sHumanStamina.setText("Human Stamina");
 
   // Show/hide button
   btnShowHideMenu = new GButton(this, 340, 70, 100, 30, "Hide Menu");
@@ -68,8 +65,6 @@ void handleSliderEvents(GSlider slider) {
     gorilla.staminaLevel = slider.getValueF();
   } else if (slider == sHumanFear) {
     for (Human h : humans) h.fearLevel = slider.getValueF();
-  } else if (slider == sHumanStamina) {
-    for (Human h : humans) h.stamina = slider.getValueF();
   }
 }
 
