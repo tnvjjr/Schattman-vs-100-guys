@@ -8,8 +8,6 @@ GSlider sSimSpeed, sGorillaFear, sGorillaStamina, sHumanFear;
 GLabel lSimSpeed, lGorillaFear, lGorillaStamina, lHumanFear, lHumanStamina;
 GButton btnShowHideMenu, btnPause, btnReset, btnSpeed, btnStatsToggle;
 boolean menuVisible = true;
-boolean paused = false;
-boolean showStats = true;
 
 void setupParameterMenu() {
   // Create panel
