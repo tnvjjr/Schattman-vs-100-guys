@@ -13,6 +13,9 @@ boolean paused = false;
 boolean showStats = true;
 int simulationSpeed = 1;
 int frameCounter = 0;
+float gorillaFear = 5;
+float gorillaStamina = 100;
+float humanFear = 5;
 
 // Configuration
 int numHumans = 100;
