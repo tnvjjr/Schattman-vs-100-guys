@@ -32,8 +32,7 @@ void setup() {
     loadConfiguration(configFile);
   }
   
-  // Setup G4P parameter menu
-  setupParameterMenu();
+  // No setupParameterMenu needed for custom UI
 }
 
 void draw() {
@@ -49,6 +48,9 @@ void draw() {
   
   // Display GUI
   gui.display();
+  
+  // Draw custom parameter menu
+  drawParameterMenu();
   
   // Increment frame counter
   frameCounter++;
@@ -178,6 +180,15 @@ void loadConfiguration(String filename) {
 // Mouse and keyboard interaction
 void mousePressed() {
   // No GUI mouse handling needed; all controls are in ParameterMenu
+  mousePressedParameterMenu();
+}
+
+void mouseDragged() {
+  mouseDraggedParameterMenu();
+}
+
+void mouseReleased() {
+  mouseReleasedParameterMenu();
 }
 
 void keyPressed() {

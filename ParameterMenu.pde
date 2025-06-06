@@ -1,11 +1,12 @@
 // ParameterMenu.pde - Custom Processing UI (no G4P)
 
 // --- Global variables for parameters (use these in your sim logic) ---
-float gorillaFear = 5;
-float gorillaStamina = 100;
-float humanFear = 5;
-int simulationSpeed = 1;
-boolean paused = false;
+// float gorillaFear = 5;
+// float gorillaStamina = 100;
+// float humanFear = 5;
+// int simulationSpeed = 1;
+// boolean paused = false;
+// Only declare these in GorillaSimulation.pde and use them here.
 
 // --- UI state ---
 boolean draggingGorillaFear = false;
