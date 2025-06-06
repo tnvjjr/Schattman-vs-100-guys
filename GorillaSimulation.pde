@@ -1,6 +1,8 @@
 // Gorilla vs Men Simulation - Main Tab
 // This is the main file that contains setup() and draw() functions
 
+import g4p_controls.*;
+
 // Global variables
 ArrayList<Entity> entities;
 Gorilla gorilla;
@@ -28,6 +30,9 @@ void setup() {
   if (fileExists(configFile)) {
     loadConfiguration(configFile);
   }
+  
+  // Setup G4P parameter menu
+  setupParameterMenu();
 }
 
 void draw() {
