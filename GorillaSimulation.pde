@@ -10,6 +10,7 @@ ArrayList<Human> humans;
 Environment environment;
 GUI gui;
 boolean paused = false;
+boolean showStats = true;
 int simulationSpeed = 1;
 int frameCounter = 0;
 
