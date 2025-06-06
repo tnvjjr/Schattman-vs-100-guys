@@ -29,7 +29,7 @@ class Gorilla extends Entity {
     chargeCooldown = 0;
     
     // Load gorilla image
-    gorillaImage = loadImage("Screenshot 2025-06-06 at 3.04.49 PM.png");
+    gorillaImage = loadImage("gorilla.png");
     if (gorillaImage == null) {
       println("Failed to load gorilla image! Make sure the file is in the data folder and the name is correct.");
     }
