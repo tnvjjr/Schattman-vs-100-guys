@@ -3,8 +3,6 @@
 
 class GUI {
   // GUI properties
-  boolean showStats = true;
-  boolean showControls = true;
   int activeHumans = 100;
   float gorillaHealth = 500;
   
