@@ -24,6 +24,7 @@ void setupParameterMenu() {
   sSimSpeed.setShowValue(true);
   sSimSpeed.setShowLimits(true);
   paramPanel.addControl(sSimSpeed);
+  sSimSpeed.addEventHandler(this, "handleSliderChange");
 
   // Gorilla fear label and slider
   lGorillaFear = new GLabel(this, 30, 60, 220, 20, "Gorilla Fear");
@@ -33,6 +34,7 @@ void setupParameterMenu() {
   sGorillaFear.setShowValue(true);
   sGorillaFear.setShowLimits(true);
   paramPanel.addControl(sGorillaFear);
+  sGorillaFear.addEventHandler(this, "handleSliderChange");
 
   // Gorilla stamina label and slider
   lGorillaStamina = new GLabel(this, 30, 110, 220, 20, "Gorilla Stamina");
@@ -42,6 +44,7 @@ void setupParameterMenu() {
   sGorillaStamina.setShowValue(true);
   sGorillaStamina.setShowLimits(true);
   paramPanel.addControl(sGorillaStamina);
+  sGorillaStamina.addEventHandler(this, "handleSliderChange");
 
   // Human fear label and slider
   lHumanFear = new GLabel(this, 30, 160, 220, 20, "Human Fear");
@@ -51,62 +54,59 @@ void setupParameterMenu() {
   sHumanFear.setShowValue(true);
   sHumanFear.setShowLimits(true);
   paramPanel.addControl(sHumanFear);
+  sHumanFear.addEventHandler(this, "handleSliderChange");
 
   // Show/hide button
   btnShowHideMenu = new GButton(this, 340, 70, 100, 30, "Hide Menu");
+  btnShowHideMenu.addEventHandler(this, "handleButtonClick");
 
   // Add control buttons to the parameter menu
   btnPause = new GButton(this, 30, 220, 60, 30, paused ? "PLAY" : "PAUSE");
   paramPanel.addControl(btnPause);
+  btnPause.addEventHandler(this, "handleButtonClick");
   btnReset = new GButton(this, 100, 220, 60, 30, "RESET");
   paramPanel.addControl(btnReset);
+  btnReset.addEventHandler(this, "handleButtonClick");
   btnSpeed = new GButton(this, 170, 220, 60, 30, "SPEED: " + simulationSpeed + "x");
   paramPanel.addControl(btnSpeed);
+  btnSpeed.addEventHandler(this, "handleButtonClick");
   btnStatsToggle = new GButton(this, 240, 220, 60, 30, showStats ? "HIDE STATS" : "SHOW STATS");
   paramPanel.addControl(btnStatsToggle);
+  btnStatsToggle.addEventHandler(this, "handleButtonClick");
 }
 
-void handleSliderEvents(GSlider slider) {
-  if (slider == sSimSpeed) {
-    simulationSpeed = int(slider.getValueF());
-  } else if (slider == sGorillaFear) {
-    gorilla.intimidationFactor = slider.getValueF();
-  } else if (slider == sGorillaStamina) {
-    gorilla.staminaLevel = slider.getValueF();
-  } else if (slider == sHumanFear) {
-    for (Human h : humans) h.fearLevel = slider.getValueF();
-  }
-}
-
-void handleButtonEvents(GButton button) {
-  if (button == btnShowHideMenu) {
-    menuVisible = !menuVisible;
-    paramPanel.setVisible(menuVisible);
-    btnShowHideMenu.setText(menuVisible ? "Hide Menu" : "Show Menu");
-  } else if (button == btnPause) {
-    paused = !paused;
-    btnPause.setText(paused ? "PLAY" : "PAUSE");
-  } else if (button == btnReset) {
-    initializeSimulation();
-  } else if (button == btnSpeed) {
-    simulationSpeed = (simulationSpeed % 4) + 1;
-    if (simulationSpeed == 3) simulationSpeed = 4;
-    btnSpeed.setText("SPEED: " + simulationSpeed + "x");
-  } else if (button == btnStatsToggle) {
-    showStats = !showStats;
-    btnStatsToggle.setText(showStats ? "HIDE STATS" : "SHOW STATS");
-  }
-}
-
-// G4P event handler
-void handleSliderEvents(GValueControl slider, GEvent event) {
+public void handleSliderChange(GSlider slider, GEvent event) {
   if (event == GEvent.CHANGE) {
-    handleSliderEvents((GSlider)slider);
+    if (slider == sSimSpeed) {
+      simulationSpeed = int(slider.getValueF());
+    } else if (slider == sGorillaFear) {
+      gorilla.intimidationFactor = slider.getValueF();
+    } else if (slider == sGorillaStamina) {
+      gorilla.staminaLevel = slider.getValueF();
+    } else if (slider == sHumanFear) {
+      for (Human h : humans) h.fearLevel = slider.getValueF();
+    }
   }
 }
 
-void handleButtonEvents(GButton button, GEvent event) {
+public void handleButtonClick(GButton button, GEvent event) {
   if (event == GEvent.CLICKED) {
-    handleButtonEvents(button);
+    if (button == btnShowHideMenu) {
+      menuVisible = !menuVisible;
+      paramPanel.setVisible(menuVisible);
+      btnShowHideMenu.setText(menuVisible ? "Hide Menu" : "Show Menu");
+    } else if (button == btnPause) {
+      paused = !paused;
+      btnPause.setText(paused ? "PLAY" : "PAUSE");
+    } else if (button == btnReset) {
+      initializeSimulation();
+    } else if (button == btnSpeed) {
+      simulationSpeed = (simulationSpeed % 4) + 1;
+      if (simulationSpeed == 3) simulationSpeed = 4;
+      btnSpeed.setText("SPEED: " + simulationSpeed + "x");
+    } else if (button == btnStatsToggle) {
+      showStats = !showStats;
+      btnStatsToggle.setText(showStats ? "HIDE STATS" : "SHOW STATS");
+    }
   }
 } 
