@@ -6,8 +6,10 @@ import g4p_controls.*;
 GPanel paramPanel;
 GSlider sSimSpeed, sGorillaFear, sGorillaStamina, sHumanFear;
 GLabel lSimSpeed, lGorillaFear, lGorillaStamina, lHumanFear, lHumanStamina;
-GButton btnShowHideMenu;
+GButton btnShowHideMenu, btnPause, btnReset, btnSpeed, btnStatsToggle;
 boolean menuVisible = true;
+boolean paused = false;
+boolean showStats = true;
 
 void setupParameterMenu() {
   // Create panel
@@ -54,6 +56,16 @@ void setupParameterMenu() {
 
   // Show/hide button
   btnShowHideMenu = new GButton(this, 340, 70, 100, 30, "Hide Menu");
+
+  // Add control buttons to the parameter menu
+  btnPause = new GButton(this, 30, 220, 60, 30, paused ? "PLAY" : "PAUSE");
+  paramPanel.addControl(btnPause);
+  btnReset = new GButton(this, 100, 220, 60, 30, "RESET");
+  paramPanel.addControl(btnReset);
+  btnSpeed = new GButton(this, 170, 220, 60, 30, "SPEED: " + simulationSpeed + "x");
+  paramPanel.addControl(btnSpeed);
+  btnStatsToggle = new GButton(this, 240, 220, 60, 30, showStats ? "HIDE STATS" : "SHOW STATS");
+  paramPanel.addControl(btnStatsToggle);
 }
 
 void handleSliderEvents(GSlider slider) {
@@ -73,6 +85,18 @@ void handleButtonEvents(GButton button) {
     menuVisible = !menuVisible;
     paramPanel.setVisible(menuVisible);
     btnShowHideMenu.setText(menuVisible ? "Hide Menu" : "Show Menu");
+  } else if (button == btnPause) {
+    paused = !paused;
+    btnPause.setText(paused ? "PLAY" : "PAUSE");
+  } else if (button == btnReset) {
+    initializeSimulation();
+  } else if (button == btnSpeed) {
+    simulationSpeed = (simulationSpeed % 4) + 1;
+    if (simulationSpeed == 3) simulationSpeed = 4;
+    btnSpeed.setText("SPEED: " + simulationSpeed + "x");
+  } else if (button == btnStatsToggle) {
+    showStats = !showStats;
+    btnStatsToggle.setText(showStats ? "HIDE STATS" : "SHOW STATS");
   }
 }
 

@@ -30,45 +30,10 @@ class GUI {
     noStroke();
     rect(10, 10, width - 20, 50);
     
-    // Draw buttons
-    drawButtons();
-    
     // Draw statistics if enabled
     if (showStats) {
       drawStatistics();
     }
-  }
-  
-  // Draw control buttons
-  void drawButtons() {
-    // Pause button
-    if (paused) {
-      fill(100, 200, 100);
-    } else {
-      fill(200, 100, 100);
-    }
-    rect(pauseButton.x, pauseButton.y, pauseButton.width, pauseButton.height);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    text(paused ? "PLAY" : "PAUSE", pauseButton.x + pauseButton.width/2, pauseButton.y + pauseButton.height/2);
-    
-    // Reset button
-    fill(100, 100, 200);
-    rect(resetButton.x, resetButton.y, resetButton.width, resetButton.height);
-    fill(255);
-    text("RESET", resetButton.x + resetButton.width/2, resetButton.y + resetButton.height/2);
-    
-    // Speed button
-    fill(200, 150, 50);
-    rect(speedButton.x, speedButton.y, speedButton.width, speedButton.height);
-    fill(255);
-    text("SPEED: " + simulationSpeed + "x", speedButton.x + speedButton.width/2, speedButton.y + speedButton.height/2);
-    
-    // Stats toggle button
-    fill(150, 150, 150);
-    rect(statsToggleButton.x, statsToggleButton.y, statsToggleButton.width, statsToggleButton.height);
-    fill(255);
-    text(showStats ? "HIDE STATS" : "SHOW STATS", statsToggleButton.x + statsToggleButton.width/2, statsToggleButton.y + statsToggleButton.height/2);
   }
   
   // Draw statistics panel
@@ -102,31 +67,6 @@ class GUI {
     rect(width - 200, 240, 180, 10);
     fill(0, 255, 0);
     rect(width - 200, 240, 180 * (float(activeHumans) / numHumans), 10);
-  }
-  
-  // Handle mouse pressed events
-  void handleMousePressed(int mx, int my) {
-    // Check if pause button was clicked
-    if (pauseButton.contains(mx, my)) {
-      paused = !paused;
-    }
-    
-    // Check if reset button was clicked
-    if (resetButton.contains(mx, my)) {
-      initializeSimulation();
-    }
-    
-    // Check if speed button was clicked
-    if (speedButton.contains(mx, my)) {
-      // Cycle through speeds: 1, 2, 4
-      simulationSpeed = (simulationSpeed % 4) + 1;
-      if (simulationSpeed == 3) simulationSpeed = 4;
-    }
-    
-    // Check if stats toggle button was clicked
-    if (statsToggleButton.contains(mx, my)) {
-      showStats = !showStats;
-    }
   }
   
   // Update statistics
